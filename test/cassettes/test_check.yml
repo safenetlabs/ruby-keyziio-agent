@@ -1,0 +1,54 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://keyziio.herokuapp.com/api/v1/check?api_token=yrDIo1JeXlR74FGpyHyi
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: 'OK '
+    headers:
+      Connection:
+      - keep-alive
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Content-Type:
+      - application/xml
+      Etag:
+      - '"7215ee9c7d9dc229d2921a40e899ec5f"'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 76c3e710-8141-47e3-a351-ad63046aeb6d
+      X-Runtime:
+      - '0.095660'
+      Server:
+      - WEBrick/1.3.1 (Ruby/2.1.2/2014-05-08)
+      Date:
+      - Thu, 14 Aug 2014 15:58:26 GMT
+      Content-Length:
+      - '1'
+      Set-Cookie:
+      - request_method=GET; path=/
+      Via:
+      - 1.1 vegur
+    body:
+      encoding: UTF-8
+      string: " "
+    http_version: 
+  recorded_at: Thu, 14 Aug 2014 15:58:26 GMT
+recorded_with: VCR 2.9.2
