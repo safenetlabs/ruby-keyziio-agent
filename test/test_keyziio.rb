@@ -40,7 +40,7 @@ class TestKeyziio < MiniTest::Test
   def test_get_keychain
     agent = Keyziio::Agent.new('b4393ce46503757f5753281b1e0ab64d9d10fd2652e4eee683fd17054590e605', '919c9236eb16d9b52b06eed69c27b5cbbdf6a23e9c27c3cf221684906f83948d')
     assert agent.check
-    id = agent.create_keychain("name")
+    id = agent.create_keychain("myname")
     assert agent.get_keychain(id)
   end
 
@@ -49,6 +49,14 @@ class TestKeyziio < MiniTest::Test
     assert_raises Keyziio::ResourceNotFound do
       agent.get_keychain("72188084-fb5f-445c-901e-05afcee24a9f")
     end
+  end
+
+  def test_get_keychain_client_scoped_token
+    agent = Keyziio::Agent.new('b4393ce46503757f5753281b1e0ab64d9d10fd2652e4eee683fd17054590e605', '919c9236eb16d9b52b06eed69c27b5cbbdf6a23e9c27c3cf221684906f83948d')
+    assert agent.check
+    id = agent.create_keychain("myname")
+    token = agent.get_client_token(id)
+    true
   end
 
 end

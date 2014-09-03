@@ -15,15 +15,19 @@ module Keyziio
 
     attr_accessor :id, :secret, :base_url, :token_hash
 
+    def url_with_creds(url)
+      uri = URI.parse(url)
+      uri.user = self.id
+      uri.password = self.secret
+      uri.to_s
+    end
+
     def check_or_get_token
       if !(self.token_hash).nil?
         return true # already have one
       end
-
-      uri = URI.parse("#{base_url}/oauth2/token")
-      uri.user = id
-      uri.password = secret
-      response = RestClient.post(uri.to_s , {:grant_type => "client_credentials"}.to_json, {:content_type => :json, :accept => :json})
+      url = self.url_with_creds("#{base_url}/oauth2/token")
+      response = RestClient.post(url , {:grant_type => "client_credentials"}.to_json, {:content_type => :json, :accept => :json})
       self.token_hash = JSON.parse(response)
     end
 
@@ -56,7 +60,7 @@ module Keyziio
       JSON.parse(response)["bytes"]
     end
 
-    def create_keychain (name)
+    def create_keychain(name)
       begin
         self.check_or_get_token
         keypart = self.get_keypart
@@ -70,7 +74,7 @@ module Keyziio
       end
     end
 
-    def get_keychain (id)
+    def get_keychain(id)
       begin
         self.check_or_get_token
         url = "#{base_url}/agent/keychains/#{id}"
@@ -82,7 +86,26 @@ module Keyziio
       rescue RestClient::ResourceNotFound => e
         raise ResourceNotFound, e.message
       end
-      
     end
+
+    def get_client_token(id)
+      begin
+        url = self.url_with_creds("#{base_url}/oauth2/token")
+        data = {:grant_type => "client_credentials",
+                :username => "",
+                :password => "",
+                :scope => "keychain client",
+                :keychain_id => id}.to_json
+        response = RestClient.post(url , data, {:content_type => :json, :accept => :json})
+        JSON.parse(response)["access_token"]
+      rescue RestClient::Unauthorized
+        raise Unauthorized
+      rescue SocketError => e
+        raise ServerError, e.message
+      rescue RestClient::ResourceNotFound => e
+        raise ResourceNotFound, e.message
+      end
+    end
+
   end
 end
