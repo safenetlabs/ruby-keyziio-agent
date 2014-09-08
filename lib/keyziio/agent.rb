@@ -60,6 +60,12 @@ module Keyziio
       JSON.parse(response)["bytes"]
     end
 
+    def wrap_key_part(key_part, public_key)
+      url = "#{base_url}/hsm/keyparts/wrap"
+      response = RestClient.post url, {'keypart' => key_part, 'public_key' => public_key}, {:accept => :json, :authorization => "Bearer #{token_hash['access_token']}"}
+      JSON.parse(response)["bytes"]
+    end
+
     def create_keychain(name)
       begin
         self.check_or_get_token
